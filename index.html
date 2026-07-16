@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,313 +5,356 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Water Run | charity: water</title>
+    <title>
+        Water Run | charity: water Game
+    </title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css">
+    <!-- Charity: water inspired font -->
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" 
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
+
 
 </head>
 
+
 <body>
 
-<!-- ======================================
-     START SCREEN
-====================================== -->
 
-<div id="startScreen" class="overlay">
+<header class="header">
 
-    <div class="menuCard">
+    <img 
+        src="https://www.charitywater.org/images/logo.png"
+        alt="charity: water logo"
+        class="logo"
+    >
 
-        <h1>💧 Water Run</h1>
 
-        <p>
-            Help collect clean water for communities around the world.
-        </p>
-
-        <h3>Select Difficulty</h3>
-
-        <div class="difficultyButtons">
-
-            <button class="difficulty" data-mode="easy">
-                Easy
-            </button>
-
-            <button class="difficulty" data-mode="normal">
-                Normal
-            </button>
-
-            <button class="difficulty" data-mode="hard">
-                Hard
-            </button>
-
-        </div>
-
-        <button id="startBtn">
-
-            Start Game
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- ======================================
-HEADER
-====================================== -->
-
-<header>
-
-    <div class="logo">
-
+    <h1>
         💧 Water Run
+    </h1>
 
-    </div>
 
-    <div class="headerStats">
+    <p>
+        Help collect clean water while avoiding pollution!
+    </p>
 
-        <div>
-
-            Score:
-            <span id="score">0</span>
-
-        </div>
-
-        <div>
-
-            High Score:
-            <span id="highScore">0</span>
-
-        </div>
-
-    </div>
 
 </header>
 
-<!-- ======================================
-GAME INFORMATION
-====================================== -->
 
-<section class="gameInfo">
 
-    <div class="lives">
 
-        ❤️
-        <span id="lives">3</span>
+<!-- =========================
+     START SCREEN
+========================= -->
 
-    </div>
 
-    <div class="timer">
+<section id="startScreen" class="screen">
 
-        ⏱️
-        <span id="timer">60</span>
-
-    </div>
-
-</section>
-
-<!-- ======================================
-PROGRESS BAR
-====================================== -->
-
-<section class="progressSection">
-
-    <h3>
-
-        Community Water Project
-
-    </h3>
-
-    <progress
-        id="progress"
-        value="0"
-        max="200">
-    </progress>
-
-</section>
-
-<!-- ======================================
-GAME AREA
-====================================== -->
-
-<main>
-
-    <section id="gameArea">
-
-        <div id="player">
-
-            🟨
-
-        </div>
-
-        <div id="message">
-
-        </div>
-
-    </section>
-
-</main>
-
-<!-- ======================================
-BUTTONS
-====================================== -->
-
-<section class="controls">
-
-    <button id="pauseBtn">
-
-        Pause
-
-    </button>
-
-    <button id="resetBtn">
-
-        Reset
-
-    </button>
-
-</section>
-
-<!-- ======================================
-MILESTONES
-====================================== -->
-
-<section id="milestoneBanner">
-
-</section>
-
-<!-- ======================================
-FACTS
-====================================== -->
-
-<section class="factBox">
 
     <h2>
-
-        Did You Know?
-
+        Welcome Water Hero! 🌎
     </h2>
 
-    <p id="factText">
 
-        Every drop counts.
-
+    <p>
+        Collect clean water drops 💧,
+        avoid pollution ☠️,
+        and help bring clean water
+        to communities around the world.
     </p>
+
+
+
+    <label for="difficulty">
+        Choose Difficulty:
+    </label>
+
+
+    <select id="difficulty">
+
+        <option value="easy">
+            Easy - More Lives & Time
+        </option>
+
+
+        <option value="normal" selected>
+            Normal - Balanced Challenge
+        </option>
+
+
+        <option value="hard">
+            Hard - Faster Pollution
+        </option>
+
+
+    </select>
+
+
+
+    <br><br>
+
+
+
+    <button id="startGame">
+        Start Mission 🚰
+    </button>
+
+
 
 </section>
 
-<!-- ======================================
-GAME OVER
-====================================== -->
 
-<div
-    id="gameOverScreen"
-    class="overlay hidden">
 
-    <div class="menuCard">
 
-        <h1>
 
-            Game Over
+<!-- =========================
+     GAME SECTION
+========================= -->
 
-        </h1>
 
-        <p>
+<section 
+    id="gameContainer"
+    class="game-container hidden"
+>
 
-            Thanks for helping spread awareness!
 
-        </p>
 
-        <button id="playAgain">
+    <!-- GAME INFORMATION -->
 
-            Play Again
+
+    <div class="hud">
+
+
+        <div>
+            Score:
+            <span id="score">
+                0
+            </span>
+        </div>
+
+
+        <div>
+            Lives:
+            <span id="lives">
+                ❤️❤️❤️
+            </span>
+        </div>
+
+
+        <div>
+            Time:
+            <span id="timer">
+                60
+            </span>
+        </div>
+
+
+        <div>
+            High Score:
+            <span id="highScore">
+                0
+            </span>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <!-- Educational Message -->
+
+    <div id="factBox">
+
+        💧 Every drop makes a difference!
+
+    </div>
+
+
+
+
+
+    <!-- GAME BOARD -->
+
+
+    <div id="gameArea">
+
+
+        <!-- Player -->
+
+        <div 
+            id="player"
+            aria-label="water container player"
+        >
+
+            🪣
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <!-- GAME CONTROLS -->
+
+
+    <div class="controls">
+
+
+        <button id="pauseGame">
+
+            ⏸ Pause
 
         </button>
 
-    </div>
 
-</div>
 
-<!-- ======================================
-WIN SCREEN
-====================================== -->
+        <button id="resetGame">
 
-<div
-    id="winScreen"
-    class="overlay hidden">
-
-    <div class="menuCard">
-
-        <h1>
-
-            🎉 You Win!
-
-        </h1>
-
-        <h3>
-
-            You helped build a community well!
-
-        </h3>
-
-        <button id="playAgain2">
-
-            Play Again
+            🔄 Reset
 
         </button>
 
+
+
     </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =========================
+     MESSAGE / WIN SCREEN
+========================= -->
+
+
+<section 
+    id="messageBox"
+    class="hidden message-box"
+>
+
+
+<h2 id="messageText">
+
+</h2>
+
+
+<button id="restartGame">
+
+    Play Again
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =========================
+     CHARITY WATER FOOTER
+========================= -->
+
+
+<footer class="water-footer">
+
+
+<img 
+src="https://www.charitywater.org/images/logo.png"
+alt="charity water logo"
+class="footer-logo"
+>
+
+
+
+<h3>
+    Make Waves Beyond the Game 🌊
+</h3>
+
+
+
+<p>
+    This game was inspired by charity: water's mission
+    to bring clean and safe water to people around the world.
+</p>
+
+
+
+<div class="footer-links">
+
+
+<a 
+href="https://www.charitywater.org/"
+target="_blank"
+>
+
+Learn More About charity: water
+
+</a>
+
+
+
+<a 
+href="https://www.charitywater.org/donate"
+target="_blank"
+>
+
+Support Clean Water
+
+</a>
+
 
 </div>
 
-<!-- ======================================
-FOOTER
-====================================== -->
 
-<footer>
 
-    <h3>
+<p class="copyright">
 
-        Learn More
+Created as a web development project 💙
 
-    </h3>
+</p>
 
-    <p>
 
-        Together we can help bring clean water to communities around the world.
-
-    </p>
-
-    <div class="footerLinks">
-
-        <a
-            href="https://www.charitywater.org"
-            target="_blank">
-
-            charity: water
-
-        </a>
-
-        <a
-            href="https://www.charitywater.org/donate"
-            target="_blank">
-
-            Donate
-
-        </a>
-
-    </div>
 
 </footer>
 
+
+
+
+
+
+
+<!-- JavaScript File -->
+
 <script src="script.js"></script>
 
+
 </body>
+
 
 </html>
