@@ -1,327 +1,728 @@
-// Log a message to the console to ensure the script is linked correctly
-//console.log('JavaScript file is linked correctly.');
+/* =====================================
+   CHARITY: WATER - WATER RUN GAME
+   Main Game JavaScript Engine
+
+   Features:
+   - Difficulty Levels
+   - Lives System
+   - Timer
+   - Falling Water Drops
+   - Pollution Hazards
+   - Score Tracking
+   - High Score Storage
+   - Educational Facts
+   - Pause System
+   - Victory Celebration
+===================================== */
 
 
-// ==========================================
-// Water Run
-// Charity: water Prototype
-// Author: Andrea Y.
-// ==========================================
+/* =========================
+   GAME SETTINGS
+========================= */
 
-// ---------- HTML Elements ----------
+const difficulties = {
+    easy: {
+        dropSpeed: 2,
+        pollutionRate: 0.15,
+        startingLives: 5,
+        time: 90
+    },
+
+    normal: {
+        dropSpeed: 4,
+        pollutionRate: 0.25,
+        startingLives: 3,
+        time: 60
+    },
+
+    hard: {
+        dropSpeed: 6,
+        pollutionRate: 0.40,
+        startingLives: 2,
+        time: 45
+    }
+};
+
+
+// Current difficulty
+let difficulty = "normal";
+
+
+// Game variables
+let score = 0;
+let lives = 3;
+let timeLeft = 60;
+let gameRunning = false;
+let paused = false;
+
+let gameInterval;
+let timerInterval;
+
+
+
+/* =========================
+   DOM ELEMENTS
+========================= */
+
 const gameArea = document.getElementById("gameArea");
-const player = document.getElementById("player");
 
 const scoreDisplay = document.getElementById("score");
-const progressBar = document.getElementById("progress");
-const message = document.getElementById("msg");
+const livesDisplay = document.getElementById("lives");
+const timerDisplay = document.getElementById("timer");
 
-const startButton = document.getElementById("startBtn");
-const resetButton = document.getElementById("resetBtn");
+const startButton = document.getElementById("startGame");
+const pauseButton = document.getElementById("pauseGame");
 
-const startScreen = document.getElementById("startScreen");
-const winScreen = document.getElementById("winScreen");
+const difficultySelect = document.getElementById(
+    "difficulty"
+);
 
-// ---------- Game Variables ----------
-let score = 0;
-let gameRunning = false;
+const player = document.getElementById("player");
 
-// Player position
-let playerX = 300;
 
-// How often objects appear
-const spawnRate = 900;
 
-// Player movement speed
-const moveAmount = 25;
+/* =========================
+   EDUCATIONAL FACTS
+========================= */
 
-// Points
-const WATER_POINTS = 10;
-const POLLUTION_POINTS = -15;
-const WIN_SCORE = 200;
+const waterFacts = [
 
-// ==========================================
-// Start Game
-// ==========================================
+    "💧 Over 700 million people worldwide lack access to clean water.",
 
-startButton.addEventListener("click", startGame);
+    "🌍 Clean water improves health, education, and communities.",
 
-function startGame() {
+    "🚰 Charity: water funds sustainable clean water projects.",
 
-    startScreen.classList.add("hidden");
+    "🌱 Safe water helps families spend less time collecting water.",
+
+    "💙 Small actions can create global change."
+
+];
+
+
+const milestoneMessages = [
+
+    "Amazing! You helped collect 10 water drops! 💧",
+
+    "Great work! Your impact is growing! 🌎",
+
+    "Community hero unlocked! ⭐",
+
+    "You are making waves! 🌊"
+
+];
+
+
+
+/* =========================
+   HIGH SCORE
+========================= */
+
+let highScore =
+    localStorage.getItem("waterRunHighScore")
+    || 0;
+
+
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame(){
+
+    resetGame();
 
     gameRunning = true;
 
-}
+    startButton.disabled = true;
 
-// ==========================================
-// Reset Game
-// ==========================================
+    gameInterval = setInterval(
+        createObject,
+        800
+    );
 
-resetButton.addEventListener("click", resetGame);
 
-function resetGame() {
+    timerInterval = setInterval(
+        countdown,
+        1000
+    );
 
-    location.reload();
 
-}
-
-// ==========================================
-// Keyboard Controls
-// ==========================================
-
-document.addEventListener("keydown", movePlayer);
-
-function movePlayer(event) {
-
-    if (!gameRunning) return;
-
-    if (event.key === "ArrowLeft") {
-
-        playerX -= moveAmount;
-
-    }
-
-    if (event.key === "ArrowRight") {
-
-        playerX += moveAmount;
-
-    }
-
-    // Prevent player from leaving screen
-
-    if (playerX < 0) {
-
-        playerX = 0;
-
-    }
-
-    if (playerX > gameArea.clientWidth - 40) {
-
-        playerX = gameArea.clientWidth - 40;
-
-    }
-
-    player.style.left = playerX + "px";
+    showFact();
 
 }
 
-// ==========================================
-// Feedback Messages
-// ==========================================
 
-function showMessage(text, color) {
 
-    message.textContent = text;
+/* =========================
+   RESET GAME
+========================= */
 
-    message.style.color = color;
+function resetGame(){
 
-    setTimeout(() => {
+    score = 0;
 
-        message.textContent = "";
+    lives =
+    difficulties[difficulty].startingLives;
 
-    }, 700);
 
-}
+    timeLeft =
+    difficulties[difficulty].time;
 
-// ==========================================
-// Update Score
-// ==========================================
 
-function updateScore(points) {
+    updateDisplay();
 
-    score += points;
 
-    if (score < 0) {
-
-        score = 0;
-
-    }
-
-    scoreDisplay.textContent = score;
-
-    progressBar.value = score;
-
-    if (score >= WIN_SCORE) {
-
-        winGame();
-
-    }
+    document
+    .querySelectorAll(".falling-object")
+    .forEach(object => object.remove());
 
 }
 
-// ==========================================
-// Create Falling Object
-// ==========================================
 
-function spawnObject() {
 
-    if (!gameRunning) return;
+/* =========================
+   CREATE FALLING OBJECTS
+========================= */
 
-    const object = document.createElement("div");
 
-    object.classList.add("drop");
+function createObject(){
 
-    const isPollution = Math.random() < 0.25;
 
-    if (isPollution) {
+    if(!gameRunning || paused)
+        return;
 
-        object.classList.add("pollution");
 
-        object.textContent = "☣️";
+    const object =
+    document.createElement("div");
+
+
+    let isPollution =
+    Math.random()
+    <
+    difficulties[difficulty]
+    .pollutionRate;
+
+
+
+    if(isPollution){
+
+        object.className =
+        "falling-object pollution";
+
+        object.innerHTML="☠️";
 
     }
 
-    else {
+    else{
 
-        object.textContent = "💧";
+        object.className =
+        "falling-object water";
+
+        object.innerHTML="💧";
 
     }
+
+
 
     object.style.left =
-        Math.random() * (gameArea.clientWidth - 30) + "px";
+    Math.random()*90+"%";
 
-    object.style.top = "0px";
 
     gameArea.appendChild(object);
 
-    animateObject(object, isPollution);
+
+
+    moveObject(object,isPollution);
 
 }
 
-// ==========================================
-// Falling Animation
-// ==========================================
 
-function animateObject(object, isPollution) {
 
-    let y = 0;
 
-    const animation = setInterval(() => {
+/* =========================
+   OBJECT MOVEMENT
+========================= */
 
-        if (!gameRunning) {
 
-            clearInterval(animation);
+function moveObject(object,isPollution){
 
-            return;
 
-        }
+let position = 0;
 
-        y += 4;
 
-        object.style.top = y + "px";
+let fall =
+setInterval(()=>{
 
-        checkCollision(object, isPollution, animation);
 
-        if (y > 500) {
+    if(paused)
+        return;
 
-            object.remove();
 
-            clearInterval(animation);
 
-        }
+    position +=
+    difficulties[difficulty]
+    .dropSpeed;
 
-    }, 20);
 
-}
 
-// ==========================================
-// Collision Detection
-// ==========================================
+    object.style.top =
+    position+"px";
 
-function checkCollision(object, isPollution, animation) {
 
-    const objectX = parseFloat(object.style.left);
 
-    if (Math.abs(objectX - playerX) < 35 &&
-        parseFloat(object.style.top) > 440) {
-
-        if (isPollution) {
-
-            updateScore(POLLUTION_POINTS);
-
-            showMessage("-15 Contaminated!", "red");
-
-        }
-
-        else {
-
-            updateScore(WATER_POINTS);
-
-            showMessage("+10 Water!", "#2E9DF7");
-
-        }
+    if(position > gameArea.clientHeight){
 
         object.remove();
 
-        clearInterval(animation);
+        clearInterval(fall);
+
+        return;
 
     }
 
-}
 
-// ==========================================
-// Win Screen
-// ==========================================
 
-function winGame() {
+    if(checkCollision(object,player)){
 
-    gameRunning = false;
 
-    winScreen.classList.remove("hidden");
+        object.remove();
 
-    launchConfetti();
+        clearInterval(fall);
 
-}
 
-// ==========================================
-// Confetti Effect
-// ==========================================
 
-function launchConfetti() {
+        if(isPollution){
 
-    for (let i = 0; i < 120; i++) {
+            loseLife();
 
-        const confetti = document.createElement("div");
+        }
 
-        confetti.textContent = "🎉";
+        else{
 
-        confetti.style.position = "fixed";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-20px";
-        confetti.style.fontSize = "22px";
-        confetti.style.pointerEvents = "none";
+            collectWater();
 
-        document.body.appendChild(confetti);
-
-        let y = -20;
-
-        const fall = setInterval(() => {
-
-            y += 5;
-
-            confetti.style.top = y + "px";
-
-            if (y > window.innerHeight) {
-
-                confetti.remove();
-
-                clearInterval(fall);
-
-            }
-
-        }, 20);
+        }
 
     }
 
+
+},20);
+
 }
 
-// ==========================================
-// Game Loop
-// ==========================================
 
-// Spawn new objects every 0.9 seconds
 
-setInterval(spawnObject, spawnRate);
+/* =========================
+   COLLISION
+========================= */
 
-console.log("Water Run Loaded Successfully!");
+
+function checkCollision(a,b){
+
+
+const aRect =
+a.getBoundingClientRect();
+
+
+const bRect =
+b.getBoundingClientRect();
+
+
+return !(
+aRect.bottom < bRect.top ||
+aRect.top > bRect.bottom ||
+aRect.right < bRect.left ||
+aRect.left > bRect.right
+);
+
+}
+
+
+
+/* =========================
+   COLLECT WATER
+========================= */
+
+
+function collectWater(){
+
+
+score += 10;
+
+
+increaseDifficulty();
+
+
+checkMilestone();
+
+
+updateDisplay();
+
+
+playSound("water");
+
+}
+
+
+
+/* =========================
+   LOSE LIFE
+========================= */
+
+
+function loseLife(){
+
+
+lives--;
+
+
+updateDisplay();
+
+
+playSound("hit");
+
+
+
+if(lives <=0){
+
+    endGame(false);
+
+}
+
+
+}
+
+
+
+/* =========================
+   TIMER
+========================= */
+
+
+function countdown(){
+
+
+if(!gameRunning)
+return;
+
+
+
+timeLeft--;
+
+
+updateDisplay();
+
+
+
+if(timeLeft <=0){
+
+    endGame(true);
+
+}
+
+
+}
+
+
+
+/* =========================
+   DIFFICULTY SCALING
+========================= */
+
+
+function increaseDifficulty(){
+
+
+if(score % 100 ===0){
+
+console.log(
+"Difficulty increased!"
+);
+
+}
+
+}
+
+
+
+/* =========================
+   DISPLAY UPDATE
+========================= */
+
+
+function updateDisplay(){
+
+scoreDisplay.textContent =
+score;
+
+
+livesDisplay.textContent =
+"❤️".repeat(lives);
+
+
+timerDisplay.textContent =
+timeLeft;
+
+}
+
+
+
+/* =========================
+   FACT ROTATION
+========================= */
+
+
+function showFact(){
+
+
+let fact =
+waterFacts[
+Math.floor(
+Math.random()*waterFacts.length
+)
+];
+
+
+console.log(fact);
+
+
+}
+
+
+
+/* =========================
+   MILESTONES
+========================= */
+
+
+function checkMilestone(){
+
+
+let index =
+score/100-1;
+
+
+if(
+Number.isInteger(index)
+&&
+milestoneMessages[index]
+){
+
+alert(
+milestoneMessages[index]
+);
+
+}
+
+}
+
+
+
+
+/* =========================
+   PAUSE SYSTEM
+========================= */
+
+
+pauseButton.addEventListener(
+"click",
+()=>{
+
+
+paused=!paused;
+
+
+pauseButton.textContent =
+paused
+?
+"Resume"
+:
+"Pause";
+
+
+});
+
+
+
+
+
+/* =========================
+   END GAME
+========================= */
+
+
+function endGame(win){
+
+
+gameRunning=false;
+
+
+clearInterval(gameInterval);
+
+clearInterval(timerInterval);
+
+
+if(score > highScore){
+
+highScore = score;
+
+localStorage.setItem(
+"waterRunHighScore",
+highScore
+);
+
+}
+
+
+
+if(win){
+
+victoryAnimation();
+
+alert(
+"🎉 Water mission complete!"
++
+"\nScore: "
++
+score
+);
+
+}
+
+else{
+
+alert(
+"Game Over 💙"
++
+"\nTry again!"
+);
+
+}
+
+
+
+startButton.disabled=false;
+
+
+}
+
+
+
+/* =========================
+   VICTORY CONFETTI
+========================= */
+
+
+function victoryAnimation(){
+
+for(let i=0;i<50;i++){
+
+let confetti =
+document.createElement("div");
+
+
+confetti.className =
+"confetti";
+
+
+confetti.style.left =
+Math.random()*100+"%";
+
+
+gameArea.appendChild(confetti);
+
+
+setTimeout(()=>{
+confetti.remove();
+},3000);
+
+}
+
+}
+
+
+
+
+/* =========================
+   SOUND SYSTEM
+========================= */
+
+
+function playSound(type){
+
+
+/*
+Future upgrade:
+
+Add:
+new Audio("water.wav").play();
+
+*/
+
+
+console.log(
+"Sound:",
+type
+);
+
+}
+
+
+
+/* =========================
+   PLAYER CONTROLS
+========================= */
+
+
+document.addEventListener(
+"keydown",
+(event)=>{
+
+
+if(!gameRunning)
+return;
+
+
+
+if(event.key==="ArrowLeft"){
+
+player.style.left =
+Math.max(
+0,
+player.offsetLeft-25
+)
++"px";
+
+}
+
+
+
+if(event.key==="ArrowRight"){
+
+player.style.left =
+player.offsetLeft+25
++"px";
+
+}
+
+
+
+});
+
+
+
+
+/* =========================
+   DIFFICULTY CHANGE
+========================= */
+
+
+difficultySelect.addEventListener(
+"change",
+(e)=>{
+
+difficulty =
+e.target.value;
+
+});
