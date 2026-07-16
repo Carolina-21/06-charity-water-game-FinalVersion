@@ -1,0 +1,528 @@
+/* ==========================================
+   Water Run
+   Charity: water Game Prototype
+   Author: Andrea Y.
+========================================== */
+
+/* ==========================
+   Brand Colors
+========================== */
+
+:root {
+
+    --yellow: #FFC907;
+    --blue: #2E9DF7;
+    --light-blue: #8BD1CB;
+    --green: #4FCB53;
+    --orange: #FF902A;
+    --red: #F5402C;
+    --dark-green: #159A48;
+
+    --background: #F7FAFC;
+    --white: #FFFFFF;
+    --dark: #333333;
+    --gray: #707070;
+
+}
+
+/* ==========================
+   Global Styles
+========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    font-family: "Nunito", sans-serif;
+
+    background: var(--background);
+
+    color: var(--dark);
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 100vh;
+
+}
+
+/* ==========================
+   Header
+========================== */
+
+header {
+
+    background: var(--yellow);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 30px;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+
+}
+
+.logo {
+
+    font-size: 2rem;
+
+    font-weight: 800;
+
+}
+
+.scoreboard {
+
+    font-size: 1.3rem;
+
+    font-weight: bold;
+
+}
+
+/* ==========================
+   Progress Bar
+========================== */
+
+.progressSection {
+
+    width: 90%;
+
+    max-width: 800px;
+
+    margin: 25px auto;
+
+}
+
+.progressSection h3 {
+
+    margin-bottom: 10px;
+
+}
+
+progress {
+
+    width: 100%;
+
+    height: 25px;
+
+}
+
+progress::-webkit-progress-bar {
+
+    background: #ddd;
+
+    border-radius: 20px;
+
+}
+
+progress::-webkit-progress-value {
+
+    background: var(--blue);
+
+    border-radius: 20px;
+
+}
+
+/* ==========================
+   Game Area
+========================== */
+
+#gameArea {
+
+    position: relative;
+
+    width: 90%;
+
+    max-width: 800px;
+
+    height: 520px;
+
+    margin: auto;
+
+    background: white;
+
+    border: 5px solid var(--blue);
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+
+}
+
+/* ==========================
+   Background Decoration
+========================== */
+
+#gameArea::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+
+    linear-gradient(
+
+        to bottom,
+
+        #dff6ff,
+
+        white
+
+    );
+
+    z-index: 0;
+
+}
+
+/* ==========================
+   Player
+========================== */
+
+#player {
+
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 300px;
+
+    font-size: 3rem;
+
+    z-index: 5;
+
+    transition: left .15s ease;
+
+}
+
+/* ==========================
+   Falling Objects
+========================== */
+
+.drop {
+
+    position: absolute;
+
+    font-size: 2rem;
+
+    animation: float 1s infinite alternate;
+
+    z-index: 3;
+
+}
+
+.pollution {
+
+    color: var(--red);
+
+}
+
+/* ==========================
+   Floating Animation
+========================== */
+
+@keyframes float {
+
+    from {
+
+        transform: translateY(0);
+
+    }
+
+    to {
+
+        transform: translateY(-5px);
+
+    }
+
+}
+
+/* ==========================
+   Message Popups
+========================== */
+
+#msg {
+
+    position: absolute;
+
+    top: 20px;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 1.5rem;
+
+    font-weight: bold;
+
+    z-index: 10;
+
+}
+
+/* ==========================
+   Buttons
+========================== */
+
+button {
+
+    background: var(--blue);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 14px 28px;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+button:hover {
+
+    background: var(--orange);
+
+    transform: scale(1.05);
+
+}
+
+/* ==========================
+   Controls
+========================== */
+
+.controls {
+
+    text-align: center;
+
+    margin: 25px;
+
+}
+
+/* ==========================
+   Instructions
+========================== */
+
+.instructions {
+
+    width: 90%;
+
+    max-width: 800px;
+
+    margin: auto;
+
+    padding: 25px;
+
+}
+
+.instructions h2 {
+
+    margin-bottom: 10px;
+
+}
+
+.instructions li {
+
+    margin: 10px 0;
+
+}
+
+/* ==========================
+   Overlay Screens
+========================== */
+
+.overlay {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: rgba(0,0,0,.70);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 999;
+
+}
+
+.hidden {
+
+    display: none;
+
+}
+
+/* ==========================
+   Cards
+========================== */
+
+.startCard,
+.winCard {
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    width: 90%;
+
+    max-width: 500px;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+
+}
+
+.startCard h1,
+.winCard h1 {
+
+    font-size: 3rem;
+
+    color: var(--blue);
+
+    margin-bottom: 20px;
+
+}
+
+.startCard p,
+.winCard p {
+
+    margin-bottom: 25px;
+
+    font-size: 1.2rem;
+
+}
+
+/* ==========================
+   Footer
+========================== */
+
+footer {
+
+    margin-top: auto;
+
+    background: var(--yellow);
+
+    text-align: center;
+
+    padding: 15px;
+
+    font-weight: bold;
+
+}
+
+/* ==========================
+   Responsive Design
+========================== */
+
+@media (max-width: 768px) {
+
+    header {
+
+        flex-direction: column;
+
+        gap: 10px;
+
+    }
+
+    .logo {
+
+        font-size: 1.6rem;
+
+    }
+
+    #gameArea {
+
+        height: 420px;
+
+    }
+
+    #player {
+
+        font-size: 2.5rem;
+
+    }
+
+    .drop {
+
+        font-size: 1.8rem;
+
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    header {
+
+        padding: 15px;
+
+    }
+
+    .scoreboard {
+
+        font-size: 1rem;
+
+    }
+
+    #gameArea {
+
+        height: 350px;
+
+    }
+
+    #player {
+
+        font-size: 2rem;
+
+    }
+
+    .drop {
+
+        font-size: 1.5rem;
+
+    }
+
+    button {
+
+        width: 100%;
+
+    }
+
+    .startCard,
+    .winCard {
+
+        padding: 25px;
+
+    }
+
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ==========================================
+         Water Run
+         Charity: water Prototype
+    =========================================== -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Water Run | charity: water</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- =========================
+         START SCREEN
+    ========================== -->
+
+    <div id="startScreen" class="overlay">
+
+        <div class="startCard">
+
+            <h1>💧 Water Run</h1>
+
+            <p>
+                Help collect clean water for communities around the world!
+            </p>
+
+            <button id="startBtn">
+                Start Game
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+
+        <div class="logo">
+
+            💧 Water Run
+
+        </div>
+
+        <div class="scoreboard">
+
+            <h3>
+                Score:
+                <span id="score">0</span>
+            </h3>
+
+        </div>
+
+    </header>
+
+    <!-- =========================
+         PROGRESS BAR
+    ========================== -->
+
+    <section class="progressSection">
+
+        <h3>Community Water Project</h3>
+
+        <progress
+            id="progress"
+            value="0"
+            max="200">
+        </progress>
+
+    </section>
+
+    <!-- =========================
+         GAME AREA
+    ========================== -->
+
+    <main>
+
+        <section id="gameArea">
+
+            <!-- Player -->
+
+            <div id="player">
+
+                🟨
+
+            </div>
+
+            <!-- Feedback -->
+
+            <div id="msg">
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =========================
+         GAME CONTROLS
+    ========================== -->
+
+    <section class="controls">
+
+        <button id="resetBtn">
+
+            Reset Game
+
+        </button>
+
+    </section>
+
+    <!-- =========================
+         HOW TO PLAY
+    ========================== -->
+
+    <section class="instructions">
+
+        <h2>How to Play</h2>
+
+        <ul>
+
+            <li>⬅️ ➡️ Use the arrow keys to move.</li>
+
+            <li>💧 Collect clean water for <strong>+10 points</strong>.</li>
+
+            <li>☣️ Avoid polluted water or lose <strong>15 points</strong>.</li>
+
+            <li>Reach <strong>200 points</strong> to build a community well!</li>
+
+        </ul>
+
+    </section>
+
+    <!-- =========================
+         WIN SCREEN
+    ========================== -->
+
+    <div id="winScreen" class="overlay hidden">
+
+        <div class="winCard">
+
+            <h1>🎉 Congratulations!</h1>
+
+            <h2>
+                You helped build a community well!
+            </h2>
+
+            <p>
+
+                Every drop counts.
+                Thank you for helping spread awareness about clean water.
+
+            </p>
+
+            <button onclick="location.reload()">
+
+                Play Again
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+
+            Inspired by the mission of
+            <strong>charity: water</strong>
+
+        </p>
+
+    </footer>
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
