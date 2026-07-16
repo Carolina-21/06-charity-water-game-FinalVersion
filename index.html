@@ -7,21 +7,14 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        Water Run | charity: water Game
-    </title>
+    <title>Water Run | charity: water Game</title>
 
-
-    <!-- Charity: water inspired font -->
     <link 
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" 
         rel="stylesheet"
     >
 
-
-    <!-- CSS File -->
     <link rel="stylesheet" href="style.css">
-
 
 </head>
 
@@ -33,29 +26,22 @@
 
     <img 
         src="https://www.charitywater.org/images/logo.png"
-        alt="charity: water logo"
+        alt="charity water logo"
         class="logo"
     >
-
 
     <h1>
         💧 Water Run
     </h1>
 
-
     <p>
         Help collect clean water while avoiding pollution!
     </p>
-
 
 </header>
 
 
 
-
-<!-- =========================
-     START SCREEN
-========================= -->
 
 
 <section id="startScreen" class="screen">
@@ -69,8 +55,7 @@
     <p>
         Collect clean water drops 💧,
         avoid pollution ☠️,
-        and help bring clean water
-        to communities around the world.
+        and help bring clean water to communities around the world.
     </p>
 
 
@@ -100,15 +85,12 @@
     </select>
 
 
-
     <br><br>
-
 
 
     <button id="startGame">
         Start Mission 🚰
     </button>
-
 
 
 </section>
@@ -117,19 +99,9 @@
 
 
 
-<!-- =========================
-     GAME SECTION
-========================= -->
 
 
-<section 
-    id="gameContainer"
-    class="game-container hidden"
->
-
-
-
-    <!-- GAME INFORMATION -->
+<section id="gameContainer" class="game-container hidden">
 
 
     <div class="hud">
@@ -167,14 +139,10 @@
         </div>
 
 
-
     </div>
 
 
 
-
-
-    <!-- Educational Message -->
 
     <div id="factBox">
 
@@ -185,33 +153,19 @@
 
 
 
-
-    <!-- GAME BOARD -->
-
-
     <div id="gameArea">
 
 
-        <!-- Player -->
-
-        <div 
-            id="player"
-            aria-label="water container player"
-        >
+        <div id="player">
 
             🪣
 
         </div>
 
 
-
     </div>
 
 
-
-
-
-    <!-- GAME CONTROLS -->
 
 
     <div class="controls">
@@ -232,7 +186,6 @@
         </button>
 
 
-
     </div>
 
 
@@ -245,27 +198,20 @@
 
 
 
-<!-- =========================
-     MESSAGE / WIN SCREEN
-========================= -->
+
+<section id="messageBox" class="message-box hidden">
 
 
-<section 
-    id="messageBox"
-    class="hidden message-box"
->
+    <h2 id="messageText">
+
+    </h2>
 
 
-<h2 id="messageText">
+    <button id="restartGame">
 
-</h2>
+        Play Again
 
-
-<button id="restartGame">
-
-    Play Again
-
-</button>
+    </button>
 
 
 </section>
@@ -276,68 +222,60 @@
 
 
 
-<!-- =========================
-     CHARITY WATER FOOTER
-========================= -->
-
 
 <footer class="water-footer">
 
 
-<img 
-src="https://www.charitywater.org/images/logo.png"
-alt="charity water logo"
-class="footer-logo"
->
+    <img 
+        src="https://www.charitywater.org/images/logo.png"
+        alt="charity water logo"
+        class="footer-logo"
+    >
 
 
 
-<h3>
-    Make Waves Beyond the Game 🌊
-</h3>
+    <h3>
+        Make Waves Beyond the Game 🌊
+    </h3>
 
 
 
-<p>
-    This game was inspired by charity: water's mission
-    to bring clean and safe water to people around the world.
-</p>
+    <p>
+        This game was inspired by charity: water's mission
+        to bring clean and safe water to people around the world.
+    </p>
 
 
 
-<div class="footer-links">
+    <div class="footer-links">
 
 
-<a 
-href="https://www.charitywater.org/"
-target="_blank"
->
+        <a 
+        href="https://www.charitywater.org/"
+        target="_blank">
 
-Learn More About charity: water
+            Learn More About charity: water
 
-</a>
-
-
-
-<a 
-href="https://www.charitywater.org/donate"
-target="_blank"
->
-
-Support Clean Water
-
-</a>
-
-
-</div>
+        </a>
 
 
 
-<p class="copyright">
+        <a 
+        href="https://www.charitywater.org/donate"
+        target="_blank">
 
-Created as a web development project 💙
+            Support Clean Water
 
-</p>
+        </a>
+
+
+    </div>
+
+
+
+    <p>
+        Created as a web development project 💙
+    </p>
 
 
 
@@ -347,14 +285,9 @@ Created as a web development project 💙
 
 
 
-
-
-<!-- JavaScript File -->
-
 <script src="script.js"></script>
 
 
 </body>
 
-
-</html> 
+</html>
